@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gesture recorder</title>
+    <script src="lib/record.js"></script>
+    <style>
+      body {
+        min-width: 100%;
+        min-height: 100%;
+        user-select: none;
+      }
+      #record {
+        display: block;
+      }
+      #recorded {
+        width: 400px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Record gestures</h1>
+    <button id="record">Record</button>
+    <textarea readonly id="recorded"></textarea>
+    <script>
+      var el = document.querySelector('body');
+      var show = document.getElementById('recorded');
+      var button = document.getElementById('record');
+      var recorder = new GestureRecorder(el);
+
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        recorder.start();
+        button.setAttribute('disabled', 'disabled');
+      }, false);
+
+      recorder.onStop = function () {
+        show.value = JSON.stringify(recorder.get(), null, '    ');
+        button.removeAttribute('disabled');
+      };
+    </script>
+  </body>
+</html>
